@@ -1,0 +1,55 @@
+{
+  "summary": "Comprehensive frontend-only E2E testing of the Manasa Skin Clinic React app on production URL. Verified Hero, Nav, Brand Logo, Trust Strip, About, Services (all 5 tabs), Results, Testimonials, Why, Instagram, FAQ, Contact, Booking form (WhatsApp deep-link) and Footer. All critical user flows work. Two issues found: (1) horizontal scroll on mobile 390px viewport (docW=472 vs winW=390 = 82px overflow), and (2) minor a11y console warnings about DialogTitle missing on mobile menu sheet.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Hero (mobile)", "issue": "Horizontal scroll overflow on 390px viewport — document.scrollWidth=472 vs window.innerWidth=390 (82px overflow). Explicit test requirement was 'no horizontal scroll'.", "selector": "body / .hero-shell / .container-lux", "priority": "HIGH"},
+      {"component": "Hero micro badges (desktop)", "issue": "In the 4-column micro-badges row, the '★ 4.9' number and adjacent 'GOOGLE RATED' / 'TREATMENTS' labels visually overlap / collide on wide viewport (visible as 'GOOGLES RATED' overlap in screenshot). Numbers or labels exceed the column at some widths.", "selector": "[data-testid=\"hero-micro-badges\"]", "priority": "MEDIUM"},
+      {"component": "Hero doctor portrait", "issue": "The '— Dr. Manasa' signature italic overlaps visually with the 'Now Consulting · Nizamabad' floating card (both anchored near bottom-left of portrait). Minor cosmetic overlap.", "selector": "[data-testid=\"hero-doctor-portrait\"]", "priority": "LOW"},
+      {"component": "Nav logo scroll-to-top", "issue": "Clicking the Manasa logo scrolls the page up but stops at scrollY≈690 instead of 0 (because the #top anchor is at the top of the hero section which sits below the sticky header + hero_shell has min-height). Not fully scrolled to top as requested.", "selector": "[data-testid=\"nav-logo-link\"]", "priority": "LOW"},
+      {"component": "Mobile menu Sheet", "issue": "Console warning (x2): 'DialogContent requires a DialogTitle for the component to be accessible for screen reader users'. Radix Sheet used without SheetTitle/VisuallyHidden.", "selector": "[data-testid=\"nav-mobile-sheet\"]", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Hero (desktop)", "issues": ["Micro trust badges (1000+ / MBBS / 12+ / ★ 4.9) overlap adjacent columns on ≥1920 viewport", "Signature '— Dr. Manasa' overlaps the 'Now Consulting · Nizamabad' pill card"]},
+      {"screen": "All pages (mobile 390px)", "issues": ["82px horizontal overflow enables horizontal scroll — likely caused by hero orbs, decorative numeral '01' or absolute-positioned floating cards extending past viewport"]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix mobile horizontal scroll: add overflow-x:hidden to body/main or constrain absolutely-positioned decorative elements in Hero (hero-orb, hero-num, g-card floating cards) with proper max-width or clip-path so they do not extend past viewport at 390px",
+    "Fix hero micro-badges overlap on wide desktop: use grid-cols-4 with min-width/gap or reduce the '★ 4.9' number font-size / column width so labels do not overflow into neighbor columns",
+    "Fix logo-to-top scroll: change nav-logo-link href from '#top' to scroll to y=0 (onClick handler with window.scrollTo({top:0}) ) since #top anchor sits below the sticky nav header",
+    "Fix a11y warning: wrap SheetContent's first child with a SheetTitle (visually hidden via VisuallyHidden or sr-only class) — e.g., <SheetTitle className='sr-only'>Menu</SheetTitle>",
+    "Consider adjusting '— Dr. Manasa' signature position or the 'Now Consulting · Nizamabad' floating card so they don't overlap"
+  ],
+  "critical_code_review_comments": [
+    "Hero.jsx uses many absolute-positioned decorative elements (orbs, numeral, g-cards) without a parent overflow:hidden, causing 82px horizontal overflow on mobile — should be scoped by overflow-hidden on .hero-shell",
+    "Nav.jsx uses Radix Sheet without SheetTitle causing accessibility violations. Add a visually-hidden SheetTitle",
+    "Contact.jsx booking form does not sanitize/validate phone or email formats client-side; also date input defaults to browser native picker (which is fine but not the shadcn calendar — acceptable per PRD)",
+    "App.js: reveal IntersectionObserver only runs once on mount; components added dynamically after mount won't be observed. Minor since site is static SPA",
+    "All data-testid attributes properly present and coverage is excellent"
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped per request)", "frontend": "92%"},
+  "test_credentials": "N/A — no auth in this app",
+  "seed_data_creation": "None — frontend-only, no backend/DB",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "First iteration complete. All flows verified working. Main functional bugs: (1) mobile horizontal scroll (~82px), (2) hero micro-badges overlap on wide desktop, (3) logo doesn't fully scroll to top, (4) Radix Sheet a11y warning. All test-ids from PRD verified present and working. Booking form opens WhatsApp popup correctly (URL redirects wa.me -> api.whatsapp.com/send with phone=916305544765) and success state renders. All 5 Services tabs switch content correctly (Skin=7, Hair=4, Aesthetic=5, Nail=3, Laser&Surgical=10 cards). FAQ multi-open works. Zero desktop console errors. Test the same flows after fixes are applied.",
+  "rca of the issue": {
+    "mobile_horizontal_scroll": {
+      "reproduction": "Set viewport 390x844, load page. document.documentElement.scrollWidth = 472 > window.innerWidth = 390.",
+      "likely_cause": "Hero.jsx uses fixed-width absolute-positioned elements: hero-orb (520px / 380px), hero-num (huge decorative '01'), floating g-cards positioned with negative left/right offsets (left:-8%, right:-14%). Without overflow-x:hidden on parent, they push document width past viewport at small widths.",
+      "mitigation": "Add overflow-x:hidden (or clip-path: inset(0)) to .hero-shell and/or body. Alternatively constrain the orbs and floating cards with responsive positioning."
+    },
+    "logo_scroll_top": {
+      "reproduction": "Scroll to footer, click nav-logo-link, page scrolls to y=690 not y=0",
+      "likely_cause": "Anchor href='#top' targets the hero section id='top' whose top edge is below the sticky nav header offset; browser scroll-to-anchor accounts for scroll-margin.",
+      "mitigation": "Replace with onClick={e => { e.preventDefault(); window.scrollTo({top:0, behavior:'smooth'}); }}"
+    }
+  }
+}

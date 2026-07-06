@@ -1,56 +1,91 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import { HOME } from "@/constants/testIds";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import LuxCursor from "./components/Cursor";
+import Nav from "./components/Nav";
+import Hero from "./components/Hero";
+import TrustStrip from "./components/TrustStrip";
+import About from "./components/About";
+import Services from "./components/Services";
+import Results from "./components/Results";
+import Testimonials from "./components/Testimonials";
+import Why from "./components/Why";
+import InstagramSection from "./components/InstagramSection";
+import FAQ from "./components/FAQ";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import { Toaster } from "./components/ui/sonner";
 
 const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+    // reveal on scroll (for .reveal utility)
+    useEffect(() => {
+        const io = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((e) => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add("in");
+                        io.unobserve(e.target);
+                    }
+                });
+            },
+            { threshold: 0.12 },
+        );
+        document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
+        // magnetic buttons
+        const magnets = document.querySelectorAll("[data-magnetic]");
+        const handlers = [];
+        magnets.forEach((m) => {
+            const move = (e) => {
+                const r = m.getBoundingClientRect();
+                const x = e.clientX - (r.left + r.width / 2);
+                const y = e.clientY - (r.top + r.height / 2);
+                m.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px)`;
+            };
+            const leave = () => {
+                m.style.transform = "";
+            };
+            m.addEventListener("mousemove", move);
+            m.addEventListener("mouseleave", leave);
+            handlers.push([m, move, leave]);
+        });
+        return () => {
+            io.disconnect();
+            handlers.forEach(([m, move, leave]) => {
+                m.removeEventListener("mousemove", move);
+                m.removeEventListener("mouseleave", leave);
+            });
+        };
+    }, []);
 
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          data-testid={HOME.emergentLink}
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App" data-testid="home-page">
+            <LuxCursor />
+            <Nav />
+            <Hero />
+            <TrustStrip />
+            <About />
+            <Services />
+            <Results />
+            <Testimonials />
+            <Why />
+            <InstagramSection />
+            <FAQ />
+            <Contact />
+            <Footer />
+            <Toaster />
+        </div>
+    );
 };
 
 function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;

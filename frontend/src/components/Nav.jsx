@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Logo from "./Logo";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "./ui/sheet";
 import { Menu } from "lucide-react";
 
 const links = [
@@ -26,7 +26,14 @@ export default function Nav() {
     return (
         <header className={`nav-shell ${scrolled ? "is-scrolled" : ""}`} data-testid="site-header">
             <div className="container-lux flex items-center justify-between">
-                <a href="#top" data-testid="nav-logo-link">
+                <a
+                    href="#top"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    data-testid="nav-logo-link"
+                >
                     <Logo tone="ink" size={38} />
                 </a>
 
@@ -60,6 +67,7 @@ export default function Nav() {
                             </button>
                         </SheetTrigger>
                         <SheetContent side="right" className="w-[86vw] sm:w-[380px]" style={{ background: "var(--warm)" }} data-testid="nav-mobile-sheet">
+                            <SheetTitle className="sr-only">Menu</SheetTitle>
                             <div className="flex flex-col h-full pt-8">
                                 <Logo tone="ink" size={36} />
                                 <div className="hairline my-8" />

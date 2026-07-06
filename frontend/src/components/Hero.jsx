@@ -118,7 +118,7 @@ export default function Hero() {
 
                     {/* micro trust badges */}
                     <motion.div
-                        className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-16 max-w-2xl"
+                        className="grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-6 mt-16 max-w-2xl"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.9, delay: 0.75 }}
@@ -126,15 +126,15 @@ export default function Hero() {
                     >
                         {[
                             { n: "1000+", l: "Happy Patients" },
-                            { n: "MBBS", l: "· DDVL" },
+                            { n: "MBBS", l: "DDVL Certified" },
                             { n: "12+", l: "Treatments" },
-                            { n: "★ 4.9", l: "Google Rated" },
+                            { n: "4.9★", l: "Google Rated" },
                         ].map((b, i) => (
-                            <div key={i} className="flex flex-col gap-1">
-                                <span className="serif" style={{ fontSize: "26px", lineHeight: 1, color: "var(--ink)", fontWeight: 300, letterSpacing: "-0.02em" }}>
+                            <div key={i} className="flex flex-col gap-1 min-w-0">
+                                <span className="serif truncate" style={{ fontSize: "24px", lineHeight: 1, color: "var(--ink)", fontWeight: 300, letterSpacing: "-0.02em" }}>
                                     {b.n}
                                 </span>
-                                <span className="eyebrow" style={{ fontSize: "10px" }}>
+                                <span className="eyebrow truncate" style={{ fontSize: "10px" }}>
                                     {b.l}
                                 </span>
                             </div>
@@ -155,20 +155,20 @@ export default function Hero() {
                         <div className="doctor-arch" />
                         <div className="doctor-frame">
                             <img src={DOCTOR_IMG} alt="Dr. Manasa, Dermatologist & Dermatosurgeon" loading="eager" />
-                        </div>
-
-                        {/* signature under portrait */}
-                        <div
-                            className="absolute left-4 -bottom-4 sm:-bottom-6 z-10 pl-4"
-                            style={{
-                                fontFamily: "Cormorant Garamond, serif",
-                                fontStyle: "italic",
-                                color: "var(--ivory)",
-                                fontSize: "22px",
-                                textShadow: "0 2px 12px rgba(20,17,15,0.4)",
-                            }}
-                        >
-                            — Dr. Manasa
+                            {/* signature inside portrait, lower-left */}
+                            <div
+                                className="absolute left-5 bottom-5 z-10"
+                                style={{
+                                    fontFamily: "Cormorant Garamond, serif",
+                                    fontStyle: "italic",
+                                    color: "var(--ivory)",
+                                    fontSize: "22px",
+                                    textShadow: "0 2px 12px rgba(20,17,15,0.5)",
+                                    letterSpacing: "-0.01em",
+                                }}
+                            >
+                                — Dr. Manasa
+                            </div>
                         </div>
 
                         {/* floating cards */}
@@ -213,7 +213,7 @@ export default function Hero() {
 
                         <motion.div
                             className="g-card"
-                            style={{ bottom: "-4%", left: "6%", padding: "14px 18px" }}
+                            style={{ bottom: "-4%", right: "10%", padding: "14px 18px" }}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.9, delay: 1.15 }}

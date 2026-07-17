@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { MapPin, Phone, Mail, MessageCircle, Clock, ArrowUpRight, Check } from "lucide-react";
+
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const concerns = [
     "Acne / Acne Scars",
@@ -26,12 +29,22 @@ const WA_NUMBER = "916305544765";
 
 export default function Contact() {
     const [sent, setSent] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [form, setForm] = useState({ name: "", phone: "", concern: "", date: "", time: "Any time", notes: "" });
 
     const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
+        setSubmitting(true);
+        // 1) persist booking to backend (paper trail + email if configured)
+        try {
+            await axios.post(`${API}/booking`, form, { timeout: 15000 });
+        } catch (err) {
+            // non-blocking — WhatsApp is our fallback delivery channel
+            console.warn("booking persist failed", err?.message);
+        }
+        // 2) also open WhatsApp with the composed message
         const msg = [
             "Hi Manasa Skin Clinic — I'd like to book a consultation.",
             "",
@@ -47,6 +60,7 @@ export default function Contact() {
         const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
         window.open(waUrl, "_blank");
         setSent(true);
+        setSubmitting(false);
     };
 
     return (
@@ -90,7 +104,7 @@ export default function Contact() {
                             <div className="space-y-2 text-sm" style={{ color: "var(--ink-60)" }}>
                                 <Row a="Monday – Friday" b="9:00 am – 7:00 pm" />
                                 <Row a="Saturday" b="9:00 am – 5:00 pm" />
-                                <Row a="Sunday" b="By Appointment" />
+                                <Row a="Sunday" b="Closed" />
                             </div>
                         </div>
                     </div>
@@ -142,8 +156,8 @@ export default function Contact() {
                                             <p className="text-xs flex items-center gap-2" style={{ color: "var(--ink-40)" }}>
                                                 🔒 Your details are private and only used to confirm your booking.
                                             </p>
-                                            <button type="submit" className="btn-lux btn-ink" data-magnetic data-testid="booking-submit-btn">
-                                                Submit Request <ArrowUpRight size={14} />
+                                            <button type="submit" disabled={submitting} className="btn-lux btn-ink disabled:opacity-60 disabled:cursor-not-allowed" data-magnetic data-testid="booking-submit-btn">
+                                                {submitting ? "Sending…" : "Submit Request"} <ArrowUpRight size={14} />
                                             </button>
                                         </div>
                                     </form>

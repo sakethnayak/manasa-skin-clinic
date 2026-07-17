@@ -1,7 +1,7 @@
 import React from "react";
 
 const items = [
-    ["1000+", "Happy Patients"],
+    ["5000+", "Happy Patients"],
     ["MBBS", "Medical Degree"],
     ["DDVL", "Dermatology Certified"],
     ["100%", "Evidence-Based Care"],

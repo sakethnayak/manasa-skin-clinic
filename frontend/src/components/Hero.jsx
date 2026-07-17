@@ -125,7 +125,7 @@ export default function Hero() {
                         data-testid="hero-micro-badges"
                     >
                         {[
-                            { n: "1000+", l: "Happy Patients" },
+                            { n: "5000+", l: "Happy Patients" },
                             { n: "MBBS", l: "DDVL Certified" },
                             { n: "12+", l: "Treatments" },
                             { n: "4.9★", l: "Google Rated" },
@@ -182,7 +182,7 @@ export default function Hero() {
                             data-testid="hero-card-patients"
                         >
                             <div className="g-card__label">Happy Patients</div>
-                            <div className="g-card__val">1000+</div>
+                            <div className="g-card__val">5000+</div>
                             <div className="g-card__sub">across skin, hair & aesthetics</div>
                         </motion.div>
 

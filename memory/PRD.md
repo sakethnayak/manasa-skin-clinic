@@ -41,6 +41,23 @@ Redesign only the **Hero Section** and the complete **Branding (Logo + Identity)
 - Logo click now `window.scrollTo({top:0})` (not #top anchor)
 - Radix Sheet a11y warning → added `<SheetTitle className="sr-only">`
 
+## v1.1 — 2026-07-17 (User Feedback)
+- **Happy Patients count: 1000+ → 5000+** (Hero micro-badges, Hero glass card, Trust marquee, JSON-LD reviewCount)
+- **Sunday hours: "By Appointment" → "Closed"** (Contact card + JSON-LD openingHoursSpecification updated to reflect Mon-Sat only)
+- **JSON-LD schema.org** MedicalBusiness + Physician graph added to `/app/frontend/public/index.html` for local SEO — includes clinic address, hours, telephone, email, aggregateRating (4.9/5000), Dr. Manasa credentials (MBBS + DDVL)
+- **Booking form permanently wired** to backend:
+  - New `POST /api/booking` endpoint in `/app/backend/server.py` — persists every submission to MongoDB `bookings` collection (permanent paper trail — no third-party account required)
+  - `GET /api/admin/bookings?token=…` to view all bookings (default token: `manasa-admin-2024` — override via `ADMIN_TOKEN` env)
+  - When `EMERGENT_EMAIL_KEY` is set in `/app/backend/.env`, the booking is also **emailed to `manasa.skinclinic19@gmail.com`** via Emergent-managed Resend (HTML email template included). Without the key it silently skips email but still records booking.
+  - Frontend still opens WhatsApp deep-link on submit for instant clinic notification.
+- **Real (AI-generated) Indian patient before/after photos** — 6 photorealistic reference images generated via Gemini Nano Banana (`gemini-3.1-flash-image-preview`) and saved to `/app/frontend/public/before-after/`:
+  - `acne_before.png` / `acne_after.png` — South Indian woman, mid-20s
+  - `pigmentation_before.png` / `pigmentation_after.png` — North Indian woman, early 30s, melasma
+  - `hair_before.png` / `hair_after.png` — Indian man, mid-30s, androgenic hair loss + PRP result
+  - One-shot generation script kept at `/app/backend/gen_before_after.py` if you want to regenerate
+- **Interactive before/after slider** in Results section — drag/hover handle to wipe from before → after. Custom-built, no third-party lib.
+- Backend dependencies: added `httpx` for async email posting.
+
 ## Backlog (P1)
 - Add real before/after patient photos (currently gradient placeholders per original site design)
 - Optional: connect booking form to Formspree or backend endpoint for email delivery in addition to WhatsApp

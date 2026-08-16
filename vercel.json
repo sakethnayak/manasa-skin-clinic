@@ -4,9 +4,10 @@
             "root": "frontend",
             "framework": "create-react-app"
         },
-        "backend": {
-            "root": "backend"
-        }
+       "backend": {
+  "root": "backend",
+  "entrypoint": "server:app"
+}
     },
     "rewrites": [
         {

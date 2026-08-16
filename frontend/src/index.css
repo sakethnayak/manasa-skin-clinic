@@ -313,6 +313,66 @@ body {
     object-fit: cover;
     object-position: center 12%;
     filter: contrast(1.02) saturate(0.92);
+    will-change: transform;
+}
+.doctor-sheen {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 253, 249, 0.28) 50%, transparent 70%);
+    transform: translateX(-140%);
+    animation: sheen 7.5s ease-in-out 2.2s infinite;
+    mix-blend-mode: screen;
+}
+@keyframes sheen {
+    0% {
+        transform: translateX(-140%);
+    }
+    55% {
+        transform: translateX(140%);
+    }
+    100% {
+        transform: translateX(140%);
+    }
+}
+.scroll-line {
+    width: 1px;
+    height: 44px;
+    background: linear-gradient(180deg, var(--champagne), transparent);
+    position: relative;
+    overflow: hidden;
+}
+.scroll-line::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: var(--champagne);
+    animation: scroll-drop 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes scroll-drop {
+    0% {
+        top: -50%;
+    }
+    100% {
+        top: 100%;
+    }
+}
+
+/* ==========================================================================
+   MANIFESTO
+   ========================================================================== */
+.mf-num {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    color: var(--champagne-2);
+    letter-spacing: -0.02em;
+    line-height: 1;
 }
 .doctor-arch {
     position: absolute;
@@ -583,8 +643,8 @@ body {
 }
 .marquee-track {
     display: flex;
-    gap: 80px;
-    animation: marquee 42s linear infinite;
+    gap: 120px;
+    animation: marquee 90s linear infinite;
     width: max-content;
 }
 .marquee-item {

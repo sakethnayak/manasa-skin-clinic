@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LuxCursor from "./components/Cursor";
+import SmoothScroll from "./components/SmoothScroll";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import TrustStrip from "./components/TrustStrip";
 import About from "./components/About";
+import Manifesto from "./components/Manifesto";
 import Services from "./components/Services";
 import Results from "./components/Results";
 import Testimonials from "./components/Testimonials";
@@ -60,11 +62,13 @@ const Home = () => {
 
     return (
         <div className="App" data-testid="home-page">
+            <SmoothScroll />
             <LuxCursor />
             <Nav />
             <Hero />
             <TrustStrip />
             <About />
+            <Manifesto />
             <Services />
             <Results />
             <Testimonials />

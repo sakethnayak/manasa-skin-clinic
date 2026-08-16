@@ -66,12 +66,14 @@ export default function LuxCursor() {
         };
         state.current.raf = requestAnimationFrame(tick);
 
-        return () => {
-            window.removeEventListener("mousemove", onMove);
-            window.removeEventListener("mouseover", onOver);
-            window.removeEventListener("mouseleave", onLeave);
-            window.removeEventListener("mouseenter", onEnter);
-            cancelAnimationFrame(state.current.raf);
+       return () => {
+  window.removeEventListener("mousemove", onMove);
+  window.removeEventListener("mouseover", onOver);
+  window.removeEventListener("mouseleave", onLeave);
+  window.removeEventListener("mouseenter", onEnter);
+
+  cancelAnimationFrame(cursorState.raf);
+};
         };
     }, []);
 

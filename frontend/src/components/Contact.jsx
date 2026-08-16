@@ -35,32 +35,61 @@ export default function Contact() {
     const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
     const onSubmit = async (e) => {
-        e.preventDefault();
-        setSubmitting(true);
-        // 1) persist booking to backend (paper trail + email if configured)
-        try {
-            await axios.post(`${API}/booking`, form, { timeout: 15000 });
-        } catch (err) {
-            // non-blocking — WhatsApp is our fallback delivery channel
-            console.warn("booking persist failed", err?.message);
-        }
-        // 2) also open WhatsApp with the composed message
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+        // Save booking to MongoDB through the backend
+        const response = await axios.post(
+            `${API}/booking`,
+            {
+                name: form.name.trim(),
+                phone: form.phone.trim(),
+                concern: form.concern,
+                date: form.date || null,
+                time: form.time || null,
+                notes: form.notes.trim() || null,
+            },
+            {
+                timeout: 15000,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        console.log("Booking saved:", response.data);
+
+        // Only open WhatsApp AFTER MongoDB successfully saves the booking
         const msg = [
             "Hi Manasa Skin Clinic — I'd like to book a consultation.",
             "",
             `Name: ${form.name}`,
             `Phone: ${form.phone}`,
             `Concern: ${form.concern}`,
-            `Preferred Date: ${form.date}`,
-            `Preferred Time: ${form.time}`,
+            `Preferred Date: ${form.date || "Not specified"}`,
+            `Preferred Time: ${form.time || "Any time"}`,
             form.notes ? `Notes: ${form.notes}` : "",
         ]
             .filter(Boolean)
             .join("\n");
+
         const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+
         window.open(waUrl, "_blank");
+
+        // Show success screen
         setSent(true);
+    } catch (err) {
+        console.error("Booking failed:", err);
+
+        alert(
+            "We couldn't submit your booking right now. Please try again or contact us on WhatsApp."
+        );
+    } finally {
         setSubmitting(false);
+    }
+};
     };
 
     return (

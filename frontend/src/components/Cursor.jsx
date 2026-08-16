@@ -16,9 +16,11 @@ export default function LuxCursor() {
     });
 
     useEffect(() => {
-        // desktop / fine pointer only
-        const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
-        if (!mq.matches) return;
+  // desktop / fine pointer only
+  const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const cursorState = state.current;
+
+  if (!mq.matches) return;
         setEnabled(true);
 
         const onMove = (e) => {

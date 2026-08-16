@@ -185,16 +185,19 @@ export default function Contact() {
 }
 
 const ContactRow = ({ Icon, label, val, sub, cta, href, testid }) => (
-    <a href={href} target={href?.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className="lux-card flex items-start gap-4 no-underline" data-testid={testid}>
+    <a href={href} target={href?.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className="lux-card flex items-start gap-3 sm:gap-4 no-underline" data-testid={testid}>
         <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: "var(--ivory-2)", color: "var(--champagne-2)" }}>
             <Icon size={18} />
         </div>
         <div className="flex-1 min-w-0">
             <div className="eyebrow" style={{ fontSize: "10px" }}>{label}</div>
-            <div className="serif truncate" style={{ fontSize: "18px", color: "var(--ink)", fontWeight: 400 }}>{val}</div>
-            {sub && <div className="text-xs mt-1" style={{ color: "var(--ink-40)" }}>{sub}</div>}
+            <div className="serif truncate" style={{ fontSize: "17px", color: "var(--ink)", fontWeight: 400 }}>{val}</div>
+            {sub && <div className="text-xs mt-1 truncate" style={{ color: "var(--ink-40)" }}>{sub}</div>}
         </div>
-        <div className="text-xs uppercase tracking-widest self-center whitespace-nowrap" style={{ color: "var(--champagne-2)" }}>{cta}</div>
+        <div className="hidden sm:block text-xs uppercase tracking-widest self-center whitespace-nowrap flex-shrink-0" style={{ color: "var(--champagne-2)" }}>{cta}</div>
+        <div className="sm:hidden self-center flex-shrink-0" style={{ color: "var(--champagne-2)" }} aria-hidden="true">
+            <ArrowUpRight size={18} />
+        </div>
     </a>
 );
 

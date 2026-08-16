@@ -10,7 +10,7 @@ WEBHOOK_ENV_FILE="${WEBHOOK_ENV_FILE:-/app/backend/.env}"
 AT_DATE="${AT_DATE:-}"
 END_DATE="${END_DATE:-}"
 
-# AT_DATE (one-tme trigger): crond can't express the year, so the "M H D Mo *"
+# AT_DATE (one-time trigger): crond can't express the year, so the "M H D Mo *"
 # line re-fires this minute every year. Fire only when the current UTC minute
 # (first 16 chars of RFC3339) matches AT_DATE's minute.
 if [ -n "$AT_DATE" ]; then

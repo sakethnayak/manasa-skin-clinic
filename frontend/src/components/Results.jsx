@@ -26,7 +26,9 @@ const cards = [
     },
 ];
 
-/** Interactive before-after slider — drag/hover to reveal 'after'. */
+/** Interactive before-after slider — drag/hover to reveal 'after'.
+ *  Uses clip-path on the TOP (before) image so both images stay at the
+ *  same 1x scale regardless of slider position. */
 function BeforeAfter({ before, after, alt }) {
     const [pos, setPos] = useState(50);
     const wrapRef = useRef(null);
@@ -66,18 +68,17 @@ function BeforeAfter({ before, after, alt }) {
             onTouchEnd={end}
             data-magnetic
         >
-            {/* AFTER (base, full) */}
-            <img src={after} alt={`${alt} — after`} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-            {/* BEFORE (clipped) */}
-            <div className="absolute inset-0 overflow-hidden" style={{ width: `${pos}%` }}>
-                <img
-                    src={before}
-                    alt={`${alt} — before`}
-                    className="absolute inset-0 h-full object-cover"
-                    style={{ width: wrapRef.current ? `${wrapRef.current.clientWidth}px` : "100%", maxWidth: "none" }}
-                    loading="lazy"
-                />
-            </div>
+            {/* AFTER — base layer (full 1x) */}
+            <img src={after} alt={`${alt} — after`} className="absolute inset-0 w-full h-full object-cover" draggable={false} loading="lazy" />
+            {/* BEFORE — top layer (full 1x, clipped from the right by slider) */}
+            <img
+                src={before}
+                alt={`${alt} — before`}
+                draggable={false}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ clipPath: `inset(0 ${100 - pos}% 0 0)`, WebkitClipPath: `inset(0 ${100 - pos}% 0 0)` }}
+            />
             {/* labels */}
             <span
                 className="absolute top-3 left-3 px-2 py-1 rounded text-[10px] tracking-widest uppercase pointer-events-none"

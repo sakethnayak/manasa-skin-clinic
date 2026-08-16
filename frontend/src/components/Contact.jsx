@@ -89,7 +89,6 @@ export default function Contact() {
     } finally {
         setSubmitting(false);
     }
-};
     };
 
     return (

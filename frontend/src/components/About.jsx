@@ -43,7 +43,7 @@ export default function About() {
                             transition={{ duration: 0.9 }}
                             data-testid="about-title"
                         >
-                            Dr. <em>Manasa</em>
+                            Dr. <em>Manasa Vadathya</em>
                         </motion.h2>
 
                         <blockquote
@@ -52,7 +52,7 @@ export default function About() {
                         >
                             "Great skin is not about perfection — it's about health, confidence, and feeling like yourself again."
                             <div className="mt-3 text-sm not-italic sans" style={{ color: "var(--ink-40)", letterSpacing: "0.08em" }}>
-                                — Dr. Manasa, Dermatologist & Dermatosurgeon
+                                — Dr. Manasa Vadthya, Dermatologist & Dermatosurgeon
                             </div>
                         </blockquote>
 

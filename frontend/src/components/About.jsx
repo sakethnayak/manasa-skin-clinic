@@ -20,11 +20,11 @@ export default function About() {
                     <div className="lg:col-span-5 order-2 lg:order-1">
                         <div className="relative">
                             <div className="rounded-2xl overflow-hidden" style={{ aspectRatio: "3/4", background: "var(--ivory-2)", boxShadow: "0 40px 80px -30px rgba(20,17,15,0.28)" }}>
-                                <img src={DOCTOR_IMG} alt="Dr. Manasa" className="w-full h-full object-cover" style={{ objectPosition: "center 15%", filter: "contrast(1.02)" }} />
+                                <img src={DOCTOR_IMG} alt="Dr. Manasa Vadthya" className="w-full h-full object-cover" style={{ objectPosition: "center 15%", filter: "contrast(1.02)" }} />
                             </div>
                             <div className="absolute -bottom-6 -right-4 p-5 rounded-xl" style={{ background: "var(--ink)", color: "var(--ivory)", maxWidth: 260 }}>
                                 <div className="eyebrow" style={{ color: "rgba(250,247,242,0.5)" }}>Signature</div>
-                                <div className="serif-cor italic text-xl mt-1" style={{ fontStyle: "italic" }}>Dr. Manasa</div>
+                                <div className="serif-cor italic text-xl mt-1" style={{ fontStyle: "italic" }}>Dr. Manasa Vadthya</div>
                                 <div className="text-xs mt-1" style={{ color: "rgba(250,247,242,0.6)" }}>MBBS · DDVL · Dermatosurgeon</div>
                             </div>
                         </div>
@@ -43,7 +43,7 @@ export default function About() {
                             transition={{ duration: 0.9 }}
                             data-testid="about-title"
                         >
-                            Dr. <em>Manasa Vadathya</em>
+                            Dr. <em>Manasa Vadthya</em>
                         </motion.h2>
 
                         <blockquote

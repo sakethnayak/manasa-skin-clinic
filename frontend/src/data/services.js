@@ -13,6 +13,7 @@ export const servicesData = {
         { title: "PRP Therapy", desc: "Platelet-rich plasma injections for natural hair restoration and density.", tag: "Most Popular" },
         { title: "Dandruff Treatment", desc: "Scalp health protocols for dandruff, seborrhoeic dermatitis, and chronic itching." },
         { title: "Alopecia Management", desc: "Specialist care for alopecia areata and diffuse hair thinning." },
+        {title: "GFC Therapy",desc: "Growth factor concentrate treatment designed to support hair regeneration and improve hair density."},
     ],
     Aesthetic: [
         { title: "Chemical Peels", desc: "Superficial to medium-depth peels for glow, clarity, and anti-aging resurfacing." },
@@ -20,6 +21,8 @@ export const servicesData = {
         { title: "Anti-Aging Treatments", desc: "Evidence-based treatments to reduce fine lines, restore volume, and firm skin." },
         { title: "Medi Facials", desc: "Medical-grade facials tailored precisely to your skin type and goals." },
         { title: "Skin Brightening", desc: "Targeted treatments for luminous, even-toned, radiant skin using proven actives." },
+        { title: "Botox",desc: "Advanced botulinum toxin treatments for facial lines, wrinkles, and refined facial aesthetics."},
+        { title: "Dermal Fillers",desc: "Precision filler treatments to restore volume, enhance facial contours, and create balanced results."},
     ],
     Nail: [
         { title: "Nail Infections", desc: "Diagnosis and treatment of fungal and bacterial nail infections." },
@@ -37,6 +40,7 @@ export const servicesData = {
         { title: "Cyst Excision", desc: "Minor surgical excision of sebaceous and epidermal cysts." },
         { title: "Nail Surgery", desc: "Surgical procedures for ingrown nails and structural nail disorders." },
         { title: "Ear Lobe Repair", desc: "Surgical repair for torn or stretched ear lobes." },
+        {title: "Tattoo Removal",desc: "Laser-based tattoo removal treatments designed to gradually break down unwanted tattoo pigment."},
     ],
 };
 

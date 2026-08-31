@@ -27,7 +27,11 @@ load_dotenv(ROOT_DIR / ".env")
 
 # MongoDB connection
 mongo_url = os.environ["MONGO_URL"]
-client = AsyncIOMotorClient(mongo_url)
+client = AsyncIOMotorClient(
+    mongo_url,
+    serverSelectionTimeoutMS=10000,
+    connectTimeoutMS=10000,
+)
 db = client[os.environ["DB_NAME"]]
 
 # Optional email integration (Emergent-managed Resend)
@@ -160,13 +164,35 @@ async def create_booking(payload: BookingCreate):
         email_sent=False,
         **payload.model_dump(),
     )
-    doc = b.model_dump()
-    doc["created_at"] = doc["created_at"].isoformat()
-    # Try email first, record outcome, then persist
+
+    # Save booking to MongoDB first
+    try:
+        doc = b.model_dump()
+        doc["created_at"] = doc["created_at"].isoformat()
+
+        await db.bookings.insert_one(doc)
+
+    except Exception:
+        logger.exception("MongoDB booking save failed")
+        raise HTTPException(
+            status_code=500,
+            detail="Could not save booking"
+        )
+
+    # Email is optional and must not break the booking
     b.email_sent = await _try_send_email(b)
-    doc["email_sent"] = b.email_sent
-    await db.bookings.insert_one(doc)
-    return {"status": "ok", "id": b.id, "email_sent": b.email_sent}
+
+    if b.email_sent:
+        await db.bookings.update_one(
+            {"id": b.id},
+            {"$set": {"email_sent": True}}
+        )
+
+    return {
+        "status": "ok",
+        "id": b.id,
+        "email_sent": b.email_sent
+    }
 
 
 @api_router.get("/admin/bookings")

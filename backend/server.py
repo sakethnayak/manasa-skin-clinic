@@ -379,14 +379,14 @@ async def try_send_email(booking: Booking) -> bool:
         )
         return False
 
-    payload = {
+       payload = {
+        "from": f"{EMAIL_FROM_NAME} <{EMAIL_FROM_ADDRESS}>",
         "to": [CLINIC_EMAIL],
         "subject": (
             f"New Booking - "
             f"{booking.name} ({booking.concern})"
         ),
         "html": booking_email_html(booking),
-        "from_name": EMAIL_FROM_NAME,
     }
 
     try:
@@ -396,9 +396,10 @@ async def try_send_email(booking: Booking) -> bool:
         ) as http_client:
 
             response = await http_client.post(
-                f"{EMAIL_BASE_URL}/api/v1/email/send",
+                f"{EMAIL_BASE_URL}/emails",
                 headers={
-                    "X-Email-Key": EMAIL_KEY
+                    "Authorization": f"Bearer {EMAIL_KEY}",
+                    "Content-Type": "application/json",
                 },
                 json=payload,
             )

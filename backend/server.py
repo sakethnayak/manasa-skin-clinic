@@ -57,9 +57,10 @@ CORS_ORIGINS = os.environ.get(
 
 # Email is OPTIONAL.
 # Booking will work even if this is missing.
-EMAIL_KEY = os.environ.get("EMERGENT_EMAIL_KEY")
-
-EMAIL_BASE_URL = "https://integrations.emergentagent.com"
+# NEW
+EMAIL_KEY = os.environ.get("RESEND_API_KEY")
+EMAIL_BASE_URL = "https://api.resend.com"
+EMAIL_FROM_ADDRESS = os.environ.get("EMAIL_FROM_ADDRESS", "onboarding@resend.dev")
 
 EMAIL_FROM_NAME = os.environ.get(
     "EMAIL_FROM_NAME",

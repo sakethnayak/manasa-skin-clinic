@@ -379,7 +379,7 @@ async def try_send_email(booking: Booking) -> bool:
         )
         return False
 
-       payload = {
+  payload = {
         "from": f"{EMAIL_FROM_NAME} <{EMAIL_FROM_ADDRESS}>",
         "to": [CLINIC_EMAIL],
         "subject": (

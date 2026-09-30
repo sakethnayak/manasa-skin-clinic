@@ -366,7 +366,7 @@ def booking_email_html(booking: Booking) -> str:
 
 async def try_send_email(booking: Booking) -> bool:
     """
-    Sends an email if EMERGENT_EMAIL_KEY exists.
+    Sends an email if RESEND_API_KEY exists.
 
     IMPORTANT:
     Email failure NEVER causes the booking to fail.
@@ -374,7 +374,7 @@ async def try_send_email(booking: Booking) -> bool:
 
     if not EMAIL_KEY:
         logger.info(
-            "EMERGENT_EMAIL_KEY not configured. "
+            "RESEND_API_KEY not configured. "
             "Booking email skipped."
         )
         return False
